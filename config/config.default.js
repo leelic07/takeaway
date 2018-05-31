@@ -12,11 +12,11 @@ module.exports = appInfo => {
 
   config.sequelize = {
     dialect: 'mysql', // support: mysql, mariadb, postgres, mssql
-    database: 'takeaway',
+    database: 'takeout',
     host: 'localhost',
     port: '3306',
     username: 'root',
-    password: '',
+    password: '123456',
   };
 
   // session
@@ -56,7 +56,7 @@ module.exports = appInfo => {
 
   config.cluster = {
     listen: {
-      port: 7001,
+      port: 7003,
       hostname: '127.0.0.1',
       // path: '/var/run/egg.sock',
     },
