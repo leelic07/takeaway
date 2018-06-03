@@ -1,4 +1,9 @@
 'use strict';
+const options = {
+  foreignKey: 'merchantId',
+  onDelete: 'CASCADE',
+  constraints: false,
+};
 
 module.exports = app => {
   const { INTEGER, STRING, FLOAT, DATE, NOW } = app.Sequelize;
@@ -30,11 +35,32 @@ module.exports = app => {
     accountName: { type: STRING(30), defaultValue: '' },
     accountPassword: { type: STRING(32), defaultValue: '' },
     pictures: { type: STRING(32), defaultValue: '' },
+    dayPrice: { type: FLOAT(5, 2), defaultValue: 0.00 },
+    dayOrder: { type: FLOAT, defaultValue: 0 },
+    monthPrice: { type: FLOAT(5, 2), defaultValue: 0 },
+    monthOrder: { type: FLOAT, defaultValue: 0 },
+    score: { type: INTEGER, defaultValue: 5 },
+    itemCount: { type: INTEGER, defaultValue: 0 },
+    itemTypeCount: { type: INTEGER, defaultValue: 0 },
+    activityCount: { type: INTEGER, defaultValue: 0 },
   }, {
     timestamps: true,
     paranoid: true,
     underscored: false,
     tableName: 'merchants',
   });
+  Merchants.associate = () => {
+    Merchants.hasOne(app.model.Users, options);
+    Merchants.hasMany(app.model.Orders, options);
+    Merchants.belongsToMany(app.model.Items, { through: 'MerchantsItems' });
+    Merchants.hasMany(app.model.Business, options);
+    Merchants.hasMany(app.model.Access, options);
+    Merchants.hasMany(app.model.Sales, options);
+    Merchants.hasMany(app.model.FeedBacks, options);
+    Merchants.hasMany(app.model.Reports, options);
+    Merchants.belongsToMany(app.model.Coupons, { through: 'MerchantsCoupons' });
+    Merchants.belongsToMany(app.model.Activitys, { through: 'MerchantsActivitys' });
+    Merchants.hasMany(app.model.Pictures, options);
+  };
   return Merchants;
 };
