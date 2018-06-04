@@ -4,7 +4,7 @@ module.exports = app => {
   const { INTEGER, STRING } = app.Sequelize;
   const Feedbacks = app.model.define('feedbacks', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
-    pid: { type: INTEGER, defaultValue: '' },
+    pid: { type: INTEGER, defaultValue: null },
     evaluate: { type: INTEGER, defaultValue: 3 }, // 好评:3,中评:2,差评:1
     goodsScore: { type: INTEGER, defaultValue: 5 },
     foodScore: { type: INTEGER, defaultValue: 5 },
@@ -19,7 +19,7 @@ module.exports = app => {
   Feedbacks.associate = () => {
     Feedbacks.belongsTo(app.model.Merchants, { foreignKey: 'merchantId', onDelete: 'CASCADE', constraints: false });
     Feedbacks.belongsTo(app.model.Orders, { foreignKey: 'orderId', onDelete: 'CASCADE', constraints: false });
-    Feedbacks.belongsTo(app.model.Members, { foreignKey: 'userId', onDelete: 'CASCADE', constraints: false });
+    Feedbacks.belongsTo(app.model.Users, { foreignKey: 'userId', onDelete: 'CASCADE', constraints: false });
   };
   return Feedbacks;
 };

@@ -1,13 +1,13 @@
 'use strict';
 
 module.exports = app => {
-  const { INTEGER, STRING, DATE } = app.Sequelize;
+  const { INTEGER, STRING, DATE, NOW } = app.Sequelize;
   const Access = app.model.define('access', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
     loginfo: { type: STRING(30), defaultValue: '' },
-    startTime: { type: DATE, defaultValue: '' },
-    endTime: { type: DATE, defaultValue: '' },
-    accessDate: { type: DATE, defaultValue: '' },
+    startTime: { type: DATE, defaultValue: null },
+    endTime: { type: DATE, defaultValue: null },
+    accessDate: { type: DATE, defaultValue: NOW },
     accessTimes: { type: INTEGER, defaultValue: 0 },
   }, {
     timestamps: true,

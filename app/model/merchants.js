@@ -6,13 +6,13 @@ const options = {
 };
 
 module.exports = app => {
-  const { INTEGER, STRING, FLOAT, DATE, NOW } = app.Sequelize;
+  const { INTEGER, STRING, FLOAT, DATE } = app.Sequelize;
   const Merchants = app.model.define('merchants', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
     typeId: { type: INTEGER, defaultValue: 0 },
     name: { type: STRING(32), defaultValue: '', unique: true },
     code: { type: STRING(10), defaultValue: '' },
-    address: { type: STRING(32), defaultValue: '' },
+    address: { type: STRING(50), defaultValue: '' },
     managerName: { type: STRING(30), defaultValue: '' },
     managerPhone: { type: STRING(30), defaultValue: '' },
     description: { type: STRING(64), defaultValue: '' },
@@ -22,8 +22,8 @@ module.exports = app => {
     lng: { type: STRING(20), defaultValue: '' },
     logo: { type: STRING(30), defaultValue: '' },
     notice: { type: STRING(32), defaultValue: '' },
-    startDate: { type: DATE, defaultValue: NOW },
-    endDate: { type: DATE, defaultValue: NOW },
+    startDate: { type: DATE, defaultValue: null },
+    endDate: { type: DATE, defaultValue: null },
     distributionInfo: { type: STRING(32), defaultValue: '' },
     startingPrice: { type: FLOAT(5, 2), defaultValue: 0.00 },
     fullFreeDistribution: { type: FLOAT(5, 2), defaultValue: 0.00 },
@@ -50,7 +50,7 @@ module.exports = app => {
     tableName: 'merchants',
   });
   Merchants.associate = () => {
-    Merchants.hasOne(app.model.Users, options);
+    Merchants.hasOne(app.model.Managers, options);
     Merchants.hasMany(app.model.Orders, options);
     Merchants.belongsToMany(app.model.Items, { through: 'MerchantsItems' });
     Merchants.hasMany(app.model.Business, options);
