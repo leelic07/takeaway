@@ -2,7 +2,7 @@
 
 module.exports = app => {
   const { INTEGER, STRING, FLOAT } = app.Sequelize;
-  const Items = app.model.define('item', {
+  const Items = app.model.define('items', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
     name: { type: STRING(32), defaultValue: '' },
     code: { type: STRING(30), defaultValue: '' },
@@ -19,13 +19,13 @@ module.exports = app => {
     stockStatus: { type: INTEGER, defaultValue: 0 }, // 库存状态(0:有限,1:无限)
     isPuton: { type: INTEGER, defaultValue: 1 }, // 1:在售,0:下架
     description: { type: STRING(255), defaultValue: '' },
-    status: { type: INTEGER, defaultValue: '' },
-    pictures: { type: STRING(125), defaultValue: '' },
+    status: { type: INTEGER, defaultValue: 1 },
+    // pictures: { type: STRING(125), defaultValue: '' },
   }, {
     timestamps: true,
     paranoid: true,
     underscored: false,
-    tableName: 'item',
+    tableName: 'items',
   });
   Items.associate = () => {
     Items.belongsToMany(app.model.Propertys, { through: 'ItemsPropertys' });

@@ -7,7 +7,7 @@ const options = {
 
 module.exports = app => {
   const { INTEGER, STRING, DATE, FLOAT } = app.Sequelize;
-  const Users = app.model.define('members', {
+  const Users = app.model.define('users', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
     loginName: { type: STRING(32), defaultValue: '' },
     loginSecret: { type: STRING(30), defaultValue: '' },
@@ -20,7 +20,7 @@ module.exports = app => {
     userEmail: { type: STRING(30), defaultValue: '' },
     userScore: { type: INTEGER, defaultValue: 0 },
     userPhoto: { type: STRING(30), defaultValue: '' },
-    userTotalScore: { tyep: INTEGER, defaultValue: 0 },
+    userTotalScore: { type: INTEGER, defaultValue: 0 },
     status: { type: INTEGER, defaultValue: 0 },
     isFlag: { type: INTEGER, defaultValue: 0 },
     lastIP: { type: STRING(8), defaultValue: '' },
@@ -32,7 +32,7 @@ module.exports = app => {
     payPwd: { type: STRING(32), defaultValue: '' },
     orderCount: { type: INTEGER, defaultValue: 0 },
     totalPrice: { type: FLOAT(5, 2), defaultValue: 0 },
-    userRank: { type: STRING(15), defaultValue: '' },
+    // userRank: { type: STRING(15), defaultValue: '' },
   }, {
     timestamps: true,
     paranoid: true,
@@ -43,6 +43,7 @@ module.exports = app => {
     Users.hasMany(app.model.Feedbacks, options);
     Users.hasMany(app.model.Orders, options);
     Users.belongsToMany(app.model.Coupons, { through: 'UsersCoupons' });
+    Users.belongsTo(app.model.UserRanks, { foreignKey: 'userRankId', constraints: false });
   };
   return Users;
 };

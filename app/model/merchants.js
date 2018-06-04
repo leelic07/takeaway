@@ -34,7 +34,7 @@ module.exports = app => {
     status: { type: INTEGER, defaultValue: 1 },
     accountName: { type: STRING(30), defaultValue: '' },
     accountPassword: { type: STRING(32), defaultValue: '' },
-    pictures: { type: STRING(32), defaultValue: '' },
+    // pictures: { type: STRING(32), defaultValue: '' },
     dayPrice: { type: FLOAT(5, 2), defaultValue: 0.00 },
     dayOrder: { type: FLOAT, defaultValue: 0 },
     monthPrice: { type: FLOAT(5, 2), defaultValue: 0 },
@@ -56,7 +56,7 @@ module.exports = app => {
     Merchants.hasMany(app.model.Business, options);
     Merchants.hasMany(app.model.Access, options);
     Merchants.hasMany(app.model.Sales, options);
-    Merchants.hasMany(app.model.FeedBacks, options);
+    Merchants.hasMany(app.model.Feedbacks, options);
     Merchants.hasMany(app.model.Reports, options);
     Merchants.belongsToMany(app.model.Coupons, { through: 'MerchantsCoupons' });
     Merchants.belongsToMany(app.model.Activitys, { through: 'MerchantsActivitys' });

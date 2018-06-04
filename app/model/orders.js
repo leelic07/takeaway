@@ -5,7 +5,7 @@ module.exports = app => {
   const Orders = app.model.define('orders', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
     orderNo: { type: STRING(32), defaultValue: '', allowNull: false, unique: true },
-    meals: { tyep: INTEGER, defaultValue: '1' },
+    meals: { type: INTEGER, defaultValue: '1' },
     totalPrice: { type: FLOAT(5, 2), defaultValue: 0.00 }, // 总价格
     packingCharge: { type: FLOAT(5, 2), defaultValue: 0.00 }, // 打包费
     deliverMoney: { type: FLOAT(5, 2), defaultValue: 0.00 }, // 配送费
@@ -21,7 +21,7 @@ module.exports = app => {
     refundApplyDate: { type: DATE, defaultValue: null },
     isRefund: { type: INTEGER, defaultValue: 0 }, // 是否退款(1:已退款,0:未退款)
     refundDate: { type: DATE, defaultValue: null },
-    refundMoney: { tyep: FLOAT(5, 2), defaultValue: 0.00 },
+    refundMoney: { type: FLOAT(5, 2), defaultValue: 0.00 },
     isReservation: { type: INTEGER, defaultValue: 0 }, // 是否预定
     reservationDate: { type: DATE, defaultValue: null }, // 预定时间
     reservationTime: { type: DATE, defaultValue: null },
