@@ -27,7 +27,8 @@ module.exports = app => {
   });
   Coupons.associate = () => {
     Coupons.belongsToMany(app.model.Merchants, { through: 'MerchantsCoupons' });
-    Coupons.belongsToMany();
+    Coupons.belongsToMany(app.model.Orders, { through: 'OrdersCoupons' });
+    Coupons.belongsToMany(app.model.Users, { through: 'UsersCoupons' });
   };
   return Coupons;
 };

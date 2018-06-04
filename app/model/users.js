@@ -42,6 +42,7 @@ module.exports = app => {
   Users.associate = () => {
     Users.hasMany(app.model.Feedbacks, options);
     Users.hasMany(app.model.Orders, options);
+    Users.belongsToMany(app.model.Coupons, { through: 'UsersCoupons' });
   };
   return Users;
 };
