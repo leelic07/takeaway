@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = app => {
-  const { INTEGER, STRING, DATE, FLOAT } = app.Sequelize;
+  const { INTEGER, STRING } = app.Sequelize;
   const Pictures = app.model.define('pictures', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
     url: { type: STRING(64), defaultValue: '' },
@@ -12,7 +12,8 @@ module.exports = app => {
     tableName: 'pictures',
   });
   Pictures.associate = () => {
-    Pictures.belongsTo();
+    Pictures.belongsTo(app.model.Merchants, { foreignKey: 'merchantId', onDelete: 'CASCADE', constraints: false });
+    Pictures.belongsTo(app.model.Items, { foreignKey: 'itemId', onDelete: 'CASCADE', constraints: false });
   };
   return Pictures;
 };

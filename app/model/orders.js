@@ -24,6 +24,7 @@ module.exports = app => {
     refundMoney: { tyep: FLOAT(5, 2), defaultValue: 0.00 },
     isReservation: { type: INTEGER, defaultValue: 0 }, // 是否预定
     reservationDate: { type: DATE, defaultValue: null }, // 预定时间
+    reservationTime: { type: DATE, defaultValue: null },
     isReminder: { type: INTEGER, defaultValue: 0 },
     reminderDate: { type: DATE, defaultValue: null },
     isDistribution: { type: INTEGER, defaultValue: 0 }, // 是否配送

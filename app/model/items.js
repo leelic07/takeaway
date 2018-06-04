@@ -28,8 +28,11 @@ module.exports = app => {
     tableName: 'item',
   });
   Items.associate = () => {
-    Items.belongsToMany(app.model.Propertys, { through: 'ItemPropertys' });
+    Items.belongsToMany(app.model.Propertys, { through: 'ItemsPropertys' });
     Items.belongsToMany(app.model.Merchants, { through: 'MerchantsItems' });
+    Items.belongsToMany(app.model.Orders, { through: 'ItemsOrders' });
+    Items.hasMany(app.model.Pictures, { foreignKey: 'itemId', onDelete: 'CASCADE', constraints: false });
+    Items.belongsTo(app.model.ItemTypes, { foreignKey: 'itemTypeId', onDelete: 'CASCADE', constraints: false });
   };
   return Items;
 };
