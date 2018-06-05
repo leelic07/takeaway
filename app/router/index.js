@@ -5,11 +5,17 @@
  */
 module.exports = app => {
   const { router, controller } = app;
-  if (app.config.env === 'local') {
-    app.beforeStart(async () => {
-      await app.model.sync();
-    });
-  }
+  const upload = app.middleware.multer();
+  // if (app.config.env === 'local') {
+  //   app.beforeStart(async () => {
+  //     await app.model.sync();
+  //   });
+  // }
   router.get('/', controller.home.index);
-  router.get('/login', controller.merchants.login);
+  router.post('/upload/uploadfile', upload.single('file'), controller.merchants.upload);
+  router.post('/merchants/save', controller.merchants.save);
+  router.get('/merchants/page', controller.merchants.page);
+  router.get('/merchants/edit', controller.merchants.edit);
+  router.post('/merchants/update', controller.merchants.update);
+  router.get('/login', controller.managers.login);
 };
