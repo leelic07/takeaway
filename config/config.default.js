@@ -8,7 +8,7 @@ module.exports = appInfo => {
   config.keys = appInfo.name + '_1527696214875_227';
 
   // add your config here
-  config.middleware = [];
+  config.middleware = [ 'verify' ];
 
   config.sequelize = {
     dialect: 'mysql', // support: mysql, mariadb, postgres, mssql
@@ -16,7 +16,7 @@ module.exports = appInfo => {
     host: 'localhost',
     port: '3306',
     username: 'root',
-    password: '123456',
+    password: '',
   };
 
   // session

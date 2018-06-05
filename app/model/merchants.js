@@ -9,7 +9,7 @@ module.exports = app => {
   const { INTEGER, STRING, FLOAT, DATE } = app.Sequelize;
   const Merchants = app.model.define('merchants', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
-    typeId: { type: INTEGER, defaultValue: 0 },
+    // typeId: { type: INTEGER, defaultValue: 0 },
     name: { type: STRING(32), defaultValue: '', unique: true },
     code: { type: STRING(10), defaultValue: '' },
     address: { type: STRING(50), defaultValue: '' },
@@ -61,6 +61,7 @@ module.exports = app => {
     Merchants.belongsToMany(app.model.Coupons, { through: 'MerchantsCoupons' });
     Merchants.belongsToMany(app.model.Activitys, { through: 'MerchantsActivitys' });
     Merchants.hasMany(app.model.Pictures, options);
+    Merchants.belongsTo(app.model.MerchantTypes, { foreignKey: 'typeId', onDelete: 'CASCADE', constraints: false });
   };
   return Merchants;
 };

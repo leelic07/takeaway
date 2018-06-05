@@ -12,10 +12,16 @@ module.exports = app => {
   //   });
   // }
   router.get('/', controller.home.index);
-  router.post('/upload/uploadfile', upload.single('file'), controller.merchants.upload);
+  router.post('/upload/uploadfile', upload.single('file'), controller.upload.uploadfile);
   router.post('/merchants/save', controller.merchants.save);
   router.get('/merchants/page', controller.merchants.page);
   router.get('/merchants/edit', controller.merchants.edit);
   router.post('/merchants/update', controller.merchants.update);
-  router.get('/login', controller.managers.login);
+
+  router.post('/merchant_types/save', controller.merchantTypes.save);
+  router.get('/merchant_types/list', controller.merchantTypes.list);
+
+  router.post('/login', controller.managers.login);
+  router.post('/register', controller.managers.register);
+  router.post('/logout', controller.managers.logout);
 };
