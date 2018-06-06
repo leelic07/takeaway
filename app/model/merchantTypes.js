@@ -2,7 +2,7 @@
 
 module.exports = app => {
   const { INTEGER, STRING } = app.Sequelize;
-  const MerchantTypes = app.model.define('MerchantTypes', {
+  const MerchantTypes = app.model.define('merchantTypes', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
     name: { type: STRING, defaultValue: '' },
   }, {

@@ -1,9 +1,4 @@
 'use strict';
-const options = {
-  foreignKey: 'merchantId',
-  onDelete: 'CASCADE',
-  constraints: false,
-};
 
 module.exports = app => {
   const { INTEGER, STRING, FLOAT, DATE } = app.Sequelize;
@@ -50,6 +45,11 @@ module.exports = app => {
     tableName: 'merchants',
   });
   Merchants.associate = () => {
+    const options = {
+      foreignKey: 'merchantId',
+      onDelete: 'CASCADE',
+      constraints: false,
+    };
     Merchants.hasOne(app.model.Managers, options);
     Merchants.hasMany(app.model.Orders, options);
     Merchants.belongsToMany(app.model.Items, { through: 'MerchantsItems' });

@@ -5,7 +5,7 @@ module.exports = () => {
     const managerId = ctx.session.managerId;
     const path = ctx.path;
     const publicPath = new RegExp('^/public');
-    if (path === '/login' || path === '/register' || publicPath.test(path)) {
+    if (path === '/login' || '/register' || '/logout' || publicPath.test(path)) {
       await next();
     } else {
       if (managerId) {

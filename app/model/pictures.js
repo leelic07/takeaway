@@ -4,7 +4,7 @@ module.exports = app => {
   const { INTEGER, STRING } = app.Sequelize;
   const Pictures = app.model.define('pictures', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
-    url: { type: STRING(64), defaultValue: '' },
+    url: { type: STRING(125), defaultValue: '' },
   }, {
     timestamps: true,
     paranoid: true,

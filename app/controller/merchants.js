@@ -17,7 +17,7 @@ class MerchantsController extends Controller {
   async edit() {
     const { ctx, service } = this;
     const result = await service.merchants.edit(ctx.query.id);
-    result ? ctx.success(result, '查询商户成功') : ctx.fail('查询商户失败');
+    result ? ctx.success({ merchants: result }, '查询商户成功') : ctx.fail('查询商户失败');
   }
 
   async update() {

@@ -4,7 +4,7 @@ module.exports = app => {
   const { INTEGER, STRING, DATE, NOW } = app.Sequelize;
   const Managers = app.model.define('managers', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
-    name: { type: STRING(30), defaultValue: '' },
+    name: { type: STRING(30), defaultValue: '', unique: true },
     passwordHash: { type: STRING(32), defaultValue: '' },
     type: { type: INTEGER, defaultValue: 0 }, // 用户类型
     status: { type: INTEGER, defaultValue: 1 },

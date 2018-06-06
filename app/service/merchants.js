@@ -4,31 +4,20 @@ const Service = require('egg').Service;
 class MerchantsService extends Service {
   async save(merchant) {
     const { ctx } = this;
-    merchant.accountPassword = ctx.helper.md5(merchant.accountPassword);
     const pictures = [];
+    const managerInfo = {
+      name: merchant.accountName,
+      passwordHash: merchant.accountPassword,
+    };
+    merchant.accountPassword = ctx.helper.md5(merchant.accountPassword);
     merchant.pictures.forEach(url => {
       pictures.push({ url });
     });
     const result = await ctx.model.Merchants.create(Object.assign(merchant, {
-      managers: {
-        name: merchant.accountName,
-        passwordHash: merchant.accountPassword,
-      },
+      manager: managerInfo,
       pictures,
-      merchantTypes: {
-        id: merchant.typeId,
-      },
     }), {
-      include: [{
-        model: ctx.model.Managers,
-        as: 'managers',
-      }, {
-        model: ctx.model.Pictures,
-        as: 'pictures',
-      }, {
-        model: ctx.model.MerchantTypes,
-        as: 'merchantTypes',
-      }],
+      include: [ ctx.model.Managers, ctx.model.Pictures ],
     });
     return result;
   }
@@ -66,10 +55,11 @@ class MerchantsService extends Service {
     const { ctx } = this;
     const id = merchant.id;
     // delete merchant.id;
-    const result = await ctx.model.Merchants.update(Object.assign(merchant), {
-      where: { id },
-      include: [ ctx.model.Pictures, ctx.model.Managers, ctx.model.MerchantTypes ],
-    });
+    const pictures = await ctx.model.Pictures.upsert(merchant.pictures);
+    // const result = await ctx.model.Merchants.upsert(merchant, {
+    //   where: { id },
+    //   include: [ ctx.model.Pictures ],
+    // });
     return result;
   }
 }
