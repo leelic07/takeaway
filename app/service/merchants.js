@@ -2,14 +2,16 @@
 const Service = require('egg').Service;
 
 class MerchantsService extends Service {
+  get transaction() {
+    return this.ctx.getTran();
+  }
   async save(merchant) {
     const { ctx } = this;
     const pictures = [];
     const managerInfo = {
       name: merchant.accountName,
-      passwordHash: merchant.accountPassword,
+      passwordHash: ctx.helper.md5(merchant.accountPassword),
     };
-    merchant.accountPassword = ctx.helper.md5(merchant.accountPassword);
     merchant.pictures.forEach(url => {
       pictures.push({ url });
     });
@@ -52,15 +54,23 @@ class MerchantsService extends Service {
   }
 
   async update(merchant) {
-    const { ctx } = this;
+    const { ctx, transaction } = this;
     const id = merchant.id;
-    // delete merchant.id;
-    const pictures = await ctx.model.Pictures.upsert(merchant.pictures);
-    // const result = await ctx.model.Merchants.upsert(merchant, {
-    //   where: { id },
-    //   include: [ ctx.model.Pictures ],
-    // });
-    return result;
+    const pictures = [];
+    merchant.pictures.forEach(picture => {
+      if (picture.url) pictures.push({ url: picture.url });
+      else pictures.push({ url: picture });
+    });
+    const pictureArray = await ctx.model.Pictures.bulkCreate(pictures, transaction);
+    const result = await ctx.model.Merchants.update(merchant, {
+      where: { id },
+      transaction,
+    });
+    if (result) {
+      const merchants = await ctx.model.Merchants.findById(id);
+      merchants.setPictures(pictureArray, { transaction });
+      return result;
+    } return '';
   }
 }
 

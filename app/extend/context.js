@@ -23,7 +23,7 @@ module.exports = {
   },
   async tran() {
     if (!this[tran]) {
-      this[tran] = await this.app.model.transaction();
+      this[tran] = await this.model.transaction();
     }
     return this[tran];
   },

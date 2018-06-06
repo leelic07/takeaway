@@ -23,5 +23,5 @@ module.exports = app => {
 
   router.post('/login', controller.managers.login);
   router.post('/register', controller.managers.register);
-  router.post('/logout', controller.managers.logout);
+  router.get('/logout', controller.managers.logout);
 };

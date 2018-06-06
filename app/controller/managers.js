@@ -20,7 +20,7 @@ class ManagersController extends Controller {
   async logout() {
     const { ctx } = this;
     ctx.session = null;
-    ctx.session ? ctx.success('退出登录成功') : ctx.fail('退出登录失败');
+    ctx.session ? ctx.fail('退出登录失败') : ctx.success({}, '退出登录成功');
   }
 }
 
