@@ -24,10 +24,13 @@ module.exports = app => {
   router.get('/merchants/list', controller.merchants.list);
   router.get('/merchants/homePage', controller.merchants.homePage);
 
+  router.get('/propertys/parent', controller.propertys.parent);
+
   router.post('/merchant_types/save', controller.merchantTypes.save);
   router.get('/merchant_types/list', controller.merchantTypes.list);
 
   router.get('/items/page', controller.items.page);
+  router.post('/items/save', controller.items.save);
 
   router.get('/item_types/list', controller.itemTypes.list);
 };

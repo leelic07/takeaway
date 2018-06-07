@@ -32,6 +32,21 @@ class ItemsService extends Service {
       totalCount,
     };
   }
+
+  async save(param) {
+    const { ctx, transaction } = this;
+    const pictures = [];
+    param.picures.forEach(url => {
+      pictures.push({ url });
+    });
+    const item = await ctx.model.Items.create(Object.assign(param, {
+      pictures,
+    }), {
+      include: [ ctx.model.pictures, ctx.model.Propertys ],
+      transaction,
+    });
+    return item;
+  }
 }
 
 module.exports = ItemsService;
