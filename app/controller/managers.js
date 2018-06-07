@@ -6,7 +6,9 @@ class ManagersController extends Controller {
     const { ctx, service } = this;
     const manager = await service.managers.login(ctx.request.body);
     if (manager) {
-      ctx.session = { managerId: manager.id };
+      ctx.session = {
+        managerId: manager.id,
+      };
       ctx.success({ users: manager }, '登录成功');
     } else ctx.fail('用户名或密码错误');
   }

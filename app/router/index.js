@@ -12,16 +12,22 @@ module.exports = app => {
   //   });
   // }
   router.get('/', controller.home.index);
+  router.post('/login', controller.managers.login);
+  router.post('/register', controller.managers.register);
+  router.get('/logout', controller.managers.logout);
+
   router.post('/upload/uploadfile', upload.single('file'), controller.upload.uploadfile);
   router.post('/merchants/save', controller.merchants.save);
   router.get('/merchants/page', controller.merchants.page);
   router.get('/merchants/edit', controller.merchants.edit);
   router.post('/merchants/update', controller.merchants.update);
+  router.get('/merchants/list', controller.merchants.list);
+  router.get('/merchants/homePage', controller.merchants.homePage);
 
   router.post('/merchant_types/save', controller.merchantTypes.save);
   router.get('/merchant_types/list', controller.merchantTypes.list);
 
-  router.post('/login', controller.managers.login);
-  router.post('/register', controller.managers.register);
-  router.get('/logout', controller.managers.logout);
+  router.get('/items/page', controller.items.page);
+
+  router.get('/item_types/list', controller.itemTypes.list);
 };

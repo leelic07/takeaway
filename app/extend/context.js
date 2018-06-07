@@ -15,7 +15,7 @@ module.exports = {
       msg,
     };
   },
-  notFind(msg) {
+  notFind(msg = '') {
     this.body = {
       code: 404,
       msg,
@@ -23,7 +23,9 @@ module.exports = {
   },
   async tran() {
     if (!this[tran]) {
-      this[tran] = await this.model.transaction();
+      this[tran] = await this.model.transaction({
+        autocommit: true,
+      });
     }
     return this[tran];
   },
