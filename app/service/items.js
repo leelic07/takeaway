@@ -1,18 +1,13 @@
 'use strict';
-const Service = require('egg').Service;
+const Base = require('./base');
 
-class ItemsService extends Service {
-  get transaction() {
-    return this.ctx.getTran();
-  }
-
+class ItemsService extends Base {
   async page(pagination) {
-    const { ctx, transaction } = this;
+    const { ctx } = this;
     const { limit, offset, where } = ctx.helper.page(pagination);
     const items = await ctx.model.Items.findAll({
       limit,
       offset,
-      transaction,
       include: [{
         model: ctx.model.Merchants,
         as: 'merchants',
@@ -20,7 +15,6 @@ class ItemsService extends Service {
       }],
     });
     const totalCount = await ctx.model.Items.count({
-      transaction,
       include: [{
         model: ctx.model.Merchants,
         as: 'merchants',

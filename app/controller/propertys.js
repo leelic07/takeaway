@@ -3,9 +3,15 @@ const Controller = require('egg').Controller;
 
 class PropertysController extends Controller {
   async parent() {
-    const { ctx, service } = this;
+    const { service } = this;
     const propertys = await service.propertys.parent();
-    propertys ? ctx.success({ propertys, size: propertys.length }, '查询商品属性成功') : ctx.fail('查询商品属性失败');
+    return propertys && { propertys, size: propertys.length };
+  }
+
+  async bathcSave() {
+    const { ctx, service } = this;
+    const propertys = await service.propertys.bathcSave();
+    propertys ? ctx.success() : ctx.fail();
   }
 }
 

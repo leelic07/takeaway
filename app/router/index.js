@@ -25,6 +25,7 @@ module.exports = app => {
   router.get('/merchants/homePage', controller.merchants.homePage);
 
   router.get('/propertys/parent', controller.propertys.parent);
+  router.get('/propertys/bathcSave', controller.propertys.bathcSave);
 
   router.post('/merchant_types/save', controller.merchantTypes.save);
   router.get('/merchant_types/list', controller.merchantTypes.list);
@@ -33,4 +34,6 @@ module.exports = app => {
   router.post('/items/save', controller.items.save);
 
   router.get('/item_types/list', controller.itemTypes.list);
+  router.post('/item_types/save', controller.itemTypes.save);
+  router.get('/item_types/page', controller.itemTypes.page);
 };

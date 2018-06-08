@@ -1,7 +1,7 @@
 'use strict';
-const Service = require('egg').Service;
+const Base = require('./base');
 
-class ManagersService extends Service {
+class ManagersService extends Base {
   async login(manager) {
     const { ctx } = this;
     manager.passwordHash = ctx.helper.md5(manager.passwordHash);

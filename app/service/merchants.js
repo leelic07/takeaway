@@ -1,11 +1,7 @@
 'use strict';
-const Service = require('egg').Service;
+const Base = require('./base');
 
-class MerchantsService extends Service {
-  get transaction() {
-    return this.ctx.getTran();
-  }
-
+class MerchantsService extends Base {
   async save(merchant) {
     const { ctx, transaction } = this;
     const pictures = [];
@@ -30,13 +26,15 @@ class MerchantsService extends Service {
   async page(pagination) {
     const { ctx } = this;
     const { limit, offset, where } = ctx.helper.page(pagination);
-    const merchants = await ctx.model.Merchants.findAll({
+    const merchants = await this.ctx.model.Merchants.findAll({
       where,
       offset,
       limit,
       include: [ ctx.model.Pictures, ctx.model.Managers, ctx.model.MerchantTypes ],
     });
-    const totalCount = await ctx.model.Merchants.count({ where });
+    const totalCount = await ctx.model.Merchants.count({
+      where,
+    });
     return {
       merchants,
       totalCount,
@@ -65,11 +63,9 @@ class MerchantsService extends Service {
       where: { id },
       transaction,
     });
-    if (result) {
-      const merchants = await ctx.model.Merchants.findById(id, { transaction });
-      await merchants.setPictures(pictureArray, { transaction });
-      return result;
-    } return '';
+    const merchants = await ctx.model.Merchants.findById(id);
+    await merchants.setPictures(pictureArray, { transaction });
+    return result;
   }
 
   async list() {
