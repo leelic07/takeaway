@@ -10,8 +10,8 @@ class MerchantsController extends Controller {
 
   async page() {
     const { ctx, service } = this;
-    const merchants = await service.merchants.page(ctx.query);
-    merchants ? ctx.success(merchants, '查询商户成功') : ctx.fail('查询商户失败');
+    const result = await service.merchants.page(ctx.query);
+    result ? ctx.success(result, '查询商户成功') : ctx.fail('查询商户失败');
   }
 
   async edit() {
@@ -28,15 +28,14 @@ class MerchantsController extends Controller {
 
   async list() {
     const { ctx, service } = this;
-    const merchants = await service.merchants.list();
-    merchants ? ctx.success({ merchants }, '查询商户成功') : ctx.fail('查询商户失败');
+    const result = await service.merchants.list();
+    result ? ctx.success({ merchants: result }, '查询商户成功') : ctx.fail('查询商户失败');
   }
 
   async homePage() {
     const { ctx, service } = this;
-    const merchants = await service.merchants.homePage(ctx.query);
-    // merchants ? ctx.success({ merchants }, '查询商户成功') : ctx.fail('查询商户失败');
-    ctx.success({ merchants }, '查询商户成功');
+    const result = await service.merchants.homePage(ctx.query);
+    ctx.success({ merchants: result }, '查询商户成功');
   }
 }
 

@@ -10,7 +10,7 @@ class ManagersController extends Controller {
         managerId: manager.id,
       };
       ctx.success({ users: manager }, '登录成功');
-    } else ctx.fail('用户名或密码错误');
+    } else ctx.fail('登录失败');
   }
 
   async register() {
