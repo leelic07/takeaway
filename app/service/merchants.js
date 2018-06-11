@@ -52,6 +52,7 @@ class MerchantsService extends Base {
 
   async update(data) {
     const { ctx, transaction } = this;
+    ctx.tran();
     const id = data.id;
     const result = await ctx.model.Merchants.update(data, {
       where: { id },

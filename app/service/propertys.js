@@ -13,6 +13,7 @@ class PropertysService extends Base {
 
   async bathcSave(data) {
     const { ctx, transaction } = this;
+    ctx.tran();
     const subPropertys = [];
     const parent = await ctx.model.Propertys.bulkCreate(data, { transaction });
     data.forEach((prop, index) => {
@@ -68,6 +69,7 @@ class PropertysService extends Base {
 
   async bathcUpdate(data) {
     const { ctx, transaction } = this;
+    ctx.tran();
     let index = '';
     await ctx.model.Propertys.update(data, {
       where: { id: data.id },
