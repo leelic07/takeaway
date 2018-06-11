@@ -30,6 +30,7 @@ module.exports = app => {
   router.get('/propertys/edit', controller.propertys.edit);
   router.post('/propertys/bathcUpdate', controller.propertys.bathcUpdate);
   router.post('/propertys/delete', controller.propertys.delete);
+  router.get('/propertys/children', controller.propertys.children);
 
   router.post('/merchant_types/save', controller.merchantTypes.save);
   router.get('/merchant_types/list', controller.merchantTypes.list);
@@ -39,6 +40,8 @@ module.exports = app => {
 
   router.get('/items/page', controller.items.page);
   router.post('/items/save', controller.items.save);
+  router.get('/items/edit', controller.items.edit);
+  router.post('/items/update', controller.items.update);
 
   router.get('/item_types/list', controller.itemTypes.list);
   router.post('/item_types/save', controller.itemTypes.save);

@@ -17,8 +17,8 @@ module.exports = appInfo => {
     port: '3306',
     username: 'root',
     // password: 'root', // 家里
-    password: '123456', // 公司
-    // password: '', //笔记本
+    // password: '123456', // 公司
+    password: '', // 笔记本
     define: {
       timestamps: true,
       paranoid: true,

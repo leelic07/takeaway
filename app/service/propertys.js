@@ -101,6 +101,14 @@ class PropertysService extends Base {
     });
     return result;
   }
+
+  async children(param) {
+    const { ctx } = this;
+    const result = await ctx.model.Propertys.findAll({
+      where: { pid: param.pid },
+    });
+    return result;
+  }
 }
 
 module.exports = PropertysService;

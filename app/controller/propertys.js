@@ -37,6 +37,17 @@ class PropertysController extends Controller {
     const result = await service.propertys.delete(ctx.request.body);
     result ? ctx.success(result, '删除属性成功') : ctx.fail('删除属性失败');
   }
+
+  async children() {
+    const { ctx, service } = this;
+    const result = await service.propertys.children(ctx.query);
+    if (result) {
+      result.forEach(prop => {
+        prop.isOpen = !!prop.isOpen;
+      });
+      ctx.success({ propertys: result }, '查询属性成功');
+    } else ctx.fail('查询属性失败');
+  }
 }
 
 module.exports = PropertysController;
