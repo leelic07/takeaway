@@ -19,6 +19,18 @@ class ItemTypesController extends Controller {
     const result = await service.itemTypes.page(ctx.query);
     result ? ctx.success(result, '查询类别成功') : ctx.fail('查询类别失败');
   }
+
+  async edit() {
+    const { ctx, service } = this;
+    const result = await service.itemTypes.edit(ctx.query);
+    result ? ctx.success({ itemTypes: result }, '查询类别成功') : ctx.fail('查询类别失败');
+  }
+
+  async update() {
+    const { ctx, service } = this;
+    const result = await service.itemTypes.update(ctx.request.body);
+    result ? ctx.success(result, '更新类别成功') : ctx.fail('更新类别失败');
+  }
 }
 
 module.exports = ItemTypesController;

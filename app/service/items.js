@@ -5,20 +5,20 @@ class ItemsService extends Base {
   async page(pagination) {
     const { ctx } = this;
     const { limit, offset, where } = ctx.helper.page(pagination);
+    const condition = {};
+    where.merchantId && (condition.id = where.merchantId);
     const items = await ctx.model.Items.findAll({
       limit,
       offset,
       include: [{
         model: ctx.model.Merchants,
-        as: 'merchants',
-        where: { id: where.merchantId },
-      }],
+        where: condition,
+      }, ctx.model.Pictures ],
     });
     const totalCount = await ctx.model.Items.count({
       include: [{
         model: ctx.model.Merchants,
-        as: 'merchants',
-        where: { id: where.merchantId },
+        where: condition,
       }],
     });
     return {
@@ -27,19 +27,30 @@ class ItemsService extends Base {
     };
   }
 
-  async save(param) {
+  async save(data) {
     const { ctx, transaction } = this;
-    const pictures = [];
-    param.picures.forEach(url => {
-      pictures.push({ url });
-    });
-    const item = await ctx.model.Items.create(Object.assign(param, {
-      pictures,
-    }), {
-      include: [ ctx.model.pictures, ctx.model.Propertys ],
+    data.itemTypeId = data.itemType;
+    const items = await ctx.model.Items.create(data, {
+      include: [ ctx.model.Pictures ],
       transaction,
     });
-    return item;
+    await data.itemMerchants.forEach(merchant => {
+      merchant.id = merchant.merchantId;
+      const merchants = ctx.model.Merchants.build(merchant);
+      items.setMerchants(merchants);
+    });
+    await data.itemPropertys.forEach(property => {
+      const propertys = ctx.model.Propertys.build(property);
+      items.setPropertys(propertys);
+    });
+    const type = await ctx.model.ItemTypes.findById(items.itemTypeId, { transaction });
+    const quantity = type.quantity + 1;
+    const id = type.id;
+    const result = await ctx.model.ItemTypes.update({ quantity }, {
+      where: { id },
+      transaction,
+    });
+    return result;
   }
 }
 

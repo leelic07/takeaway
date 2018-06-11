@@ -22,7 +22,27 @@ class ItemTypesService extends Base {
       limit,
       offset,
     });
-    return itemTypes;
+    const totalCount = await ctx.model.ItemTypes.count({
+      where,
+    });
+    return {
+      itemTypes,
+      totalCount,
+    };
+  }
+
+  async edit(param) {
+    const { ctx } = this;
+    const result = await ctx.model.ItemTypes.findById(param.id);
+    return result;
+  }
+
+  async update(data) {
+    const { ctx } = this;
+    const result = await ctx.model.ItemTypes.update(data, {
+      where: { id: data.id },
+    });
+    return result;
   }
 }
 

@@ -3,22 +3,18 @@ const Base = require('./base');
 
 class MerchantsService extends Base {
   async save(merchant) {
-    const { ctx, transaction } = this;
+    const { ctx } = this;
     const pictures = [];
     merchant.accountPassword = ctx.helper.md5(merchant.passwordHash);
     const managerInfo = {
       name: merchant.accountName,
       passwordHash: merchant.passwordHash,
     };
-    merchant.pictures.forEach(url => {
-      pictures.push({ url });
-    });
     const result = await ctx.model.Merchants.create(Object.assign(merchant, {
       manager: managerInfo,
       pictures,
     }), {
       include: [ ctx.model.Managers, ctx.model.Pictures ],
-      transaction,
     });
     return result;
   }
