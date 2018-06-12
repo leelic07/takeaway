@@ -5,7 +5,12 @@ class ItemsController extends Controller {
   async page() {
     const { ctx, service } = this;
     const result = await service.items.page(ctx.query);
-    result ? ctx.success(result, '查询商品成功') : ctx.fail('查询商品失败');
+    if (result) {
+      result.items.forEach(item => {
+        item.dataValues.itemTypeName = item.itemType.name;
+      });
+      ctx.success(result, '查询商品成功');
+    } else ctx.fail('查询商品失败');
   }
 
   async save() {

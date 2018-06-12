@@ -3,8 +3,8 @@ const Service = require('egg').Service;
 
 class BaseService extends Service {
   get transaction() {
-    // this.ctx.tran();
-    return this.ctx.transaction;
+    const transaction = this.ctx.transaction();
+    return transaction;
   }
 }
 

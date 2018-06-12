@@ -29,7 +29,7 @@ module.exports = {
     }
     return this[tran];
   },
-  get transaction() {
+  transaction() {
     return this[tran];
   },
 };

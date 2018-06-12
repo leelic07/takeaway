@@ -15,7 +15,7 @@ class ItemsService extends Base {
       include: [{
         model: ctx.model.Merchants,
         where: condition,
-      }, ctx.model.Pictures ],
+      }, ctx.model.Pictures, ctx.model.ItemTypes ],
     });
     const totalCount = await ctx.model.Items.count({
       where,
@@ -44,6 +44,7 @@ class ItemsService extends Base {
       items.addMerchants(merchants, { transaction });
     });
     await data.itemPropertys.forEach(property => {
+      property.id = property.propertyId;
       const propertys = ctx.model.Propertys.build(property, { transaction });
       items.addPropertys(propertys, { transaction });
     });
@@ -90,21 +91,20 @@ class ItemsService extends Base {
       transaction,
     });
     const item = await ctx.model.Items.findById(data.id);
-    await item.setPictures(null, { transaction });
     await item.setMerchants(null, { transaction });
     await item.setPropertys(null, { transaction });
     await data.pictures.forEach(pic => delete pic.id);
     const pictures = await ctx.model.Pictures.bulkCreate(data.pictures, { transaction });
-    await item.addPictures(pictures, { transaction });
+    await item.setPictures(pictures, { transaction });
     await data.itemMerchants.forEach(merchant => {
       merchant.id = merchant.merchantId;
-      const merc = ctx.model.Merchants.build(merchant, { transaction });
+      const merc = ctx.model.Merchants.build(merchant);
       item.addMerchants(merc, { transaction });
     });
     await data.itemPropertys.forEach(property => {
       property.id = property.propertyId;
       ctx.model.Propertys.update(property, { where: { id: property.id }, transaction });
-      const prop = ctx.model.Propertys.build(property, { transaction });
+      const prop = ctx.model.Propertys.build(property);
       item.addPropertys(prop, { transaction });
     });
     return result;

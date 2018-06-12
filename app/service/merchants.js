@@ -59,12 +59,9 @@ class MerchantsService extends Base {
       transaction,
     });
     const merchant = await ctx.model.Merchants.findById(id);
-    await merchant.setPictures(null);
-    await data.pictures.forEach(picture => {
-      delete picture.id;
-      const pic = ctx.model.Pictures.create(picture);
-      merchant.addPictures(pic, { transaction });
-    });
+    data.pictures.forEach(picture => delete picture.id);
+    const pictures = await ctx.model.Pictures.bulkCreate(data.pictures, { transaction });
+    merchant.setPictures(pictures, { transaction });
     return result;
   }
 
