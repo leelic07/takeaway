@@ -32,7 +32,7 @@ class ItemsService extends Base {
 
   async save(data) {
     const { ctx, transaction } = this;
-    ctx.tran();
+    await ctx.tran();
     data.itemTypeId = data.itemType;
     const items = await ctx.model.Items.create(data, {
       include: [ ctx.model.Pictures ],
@@ -85,7 +85,7 @@ class ItemsService extends Base {
 
   async update(data) {
     const { ctx, transaction } = this;
-    ctx.tran();
+    await ctx.tran();
     const result = await ctx.model.Items.update(data, {
       where: { id: data.id },
       transaction,
@@ -107,6 +107,34 @@ class ItemsService extends Base {
       const prop = ctx.model.Propertys.build(property);
       item.addPropertys(prop, { transaction });
     });
+    return result;
+  }
+
+  async superUpdate(data) {
+    const { ctx, transaction } = this;
+    await ctx.tran();
+    const result = await ctx.model.Items.update({ isPuton: data.isPuton }, {
+      where: { id: data.itemId },
+      transaction,
+    });
+    const item = await ctx.model.Items.findById(data.itemId);
+    const merchants = await ctx.model.Merchants.findAll({
+      where: { id: { $in: data.merchantId.split(',') } },
+    });
+    item.setMerchants(merchants, { transaction });
+    return result;
+  }
+
+  async updateIsPuton(data) {
+    const { ctx, transaction } = this;
+    await ctx.tran();
+    const result = await ctx.model.Items.update({ isPuton: data.isPuton }, {
+      where: { id: data.itemId },
+      transaction,
+    });
+    const item = await ctx.model.Items.findById(data.itemId);
+    const merchant = await ctx.model.Merchants.findById(data.merchantId);
+    await item.setMerchants(merchant, { transaction });
     return result;
   }
 }

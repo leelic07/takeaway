@@ -37,6 +37,12 @@ class MerchantsController extends Controller {
     const result = await service.merchants.homePage(ctx.query);
     ctx.success({ merchants: result }, '查询商户成功');
   }
+
+  async bindItemlist() {
+    const { ctx, service } = this;
+    const result = await service.merchants.bindItemlist(ctx.query);
+    result ? ctx.success({ merchants: result }, '查询商户成功') : ctx.fail('查询商户失败');
+  }
 }
 
 module.exports = MerchantsController;

@@ -23,6 +23,7 @@ module.exports = app => {
   router.post('/merchants/update', controller.merchants.update);
   router.get('/merchants/list', controller.merchants.list);
   router.get('/merchants/homePage', controller.merchants.homePage);
+  router.get('/merchants/bindItemlist', controller.merchants.bindItemlist);
 
   router.get('/propertys/parent', controller.propertys.parent);
   router.post('/propertys/bathcSave', controller.propertys.bathcSave);
@@ -42,10 +43,15 @@ module.exports = app => {
   router.post('/items/save', controller.items.save);
   router.get('/items/edit', controller.items.edit);
   router.post('/items/update', controller.items.update);
+  router.post('/items/superUpdate', controller.items.superUpdate);
+  router.post('/items/updateIsPuton', controller.items.updateIsPuton);
 
   router.get('/item_types/list', controller.itemTypes.list);
   router.post('/item_types/save', controller.itemTypes.save);
   router.get('/item_types/page', controller.itemTypes.page);
   router.get('/item_types/edit', controller.itemTypes.edit);
   router.post('/item_types/update', controller.itemTypes.update);
+
+  router.get('/activitys/page', controller.activitys.page);
+  router.get('/coupons/page', controller.coupons.page);
 };

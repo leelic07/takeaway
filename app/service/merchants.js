@@ -52,7 +52,7 @@ class MerchantsService extends Base {
 
   async update(data) {
     const { ctx, transaction } = this;
-    ctx.tran();
+    await ctx.tran();
     const id = data.id;
     const result = await ctx.model.Merchants.update(data, {
       where: { id },
@@ -75,6 +75,17 @@ class MerchantsService extends Base {
     const { ctx } = this;
     const merchants = await ctx.model.Merchants.findById(param.merchantId);
     return merchants;
+  }
+
+  async bindItemlist(param) {
+    const { ctx } = this;
+    const result = await ctx.model.Merchants.findAll({
+      include: [{
+        model: ctx.model.Items,
+        where: { id: param.itemId },
+      }],
+    });
+    return result;
   }
 }
 

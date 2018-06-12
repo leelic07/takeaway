@@ -8,7 +8,7 @@ module.exports = appInfo => {
   config.keys = appInfo.name + '_1527696214875_227';
 
   // add your config here
-  config.middleware = [ 'verify' ];
+  config.middleware = [ 'verify', 'request' ];
 
   config.sequelize = {
     dialect: 'mysql', // support: mysql, mariadb, postgres, mssql
@@ -17,8 +17,8 @@ module.exports = appInfo => {
     port: '3306',
     username: 'root',
     // password: 'root', // 家里
-    password: '123456', // 公司
-    // password: '', // 笔记本
+    // password: '123456', // 公司
+    password: '', // 笔记本
     define: {
       timestamps: true,
       paranoid: true,

@@ -23,13 +23,11 @@ module.exports = {
   },
   async tran() {
     if (!this[tran]) {
-      this[tran] = await this.model.transaction({
-        autocommit: true,
-      });
+      this[tran] = await this.model.transaction();
     }
     return this[tran];
   },
-  transaction() {
+  get transaction() {
     return this[tran];
   },
 };

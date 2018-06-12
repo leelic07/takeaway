@@ -8,6 +8,7 @@ class ItemsController extends Controller {
     if (result) {
       result.items.forEach(item => {
         item.dataValues.itemTypeName = item.itemType.name;
+        item.dataValues.isPuton = item.isPuton.toString();
       });
       ctx.success(result, '查询商品成功');
     } else ctx.fail('查询商品失败');
@@ -32,6 +33,18 @@ class ItemsController extends Controller {
   async update() {
     const { ctx, service } = this;
     const result = await service.items.update(ctx.request.body);
+    result ? ctx.success(result, '更新商品成功') : ctx.fail('更新商品失败');
+  }
+
+  async superUpdate() {
+    const { ctx, service } = this;
+    const result = await service.items.superUpdate(ctx.request.body);
+    result ? ctx.success(result, '更新商品成功') : ctx.fail('更新商品失败');
+  }
+
+  async updateIsPuton() {
+    const { ctx, service } = this;
+    const result = await service.items.updateIsPuton(ctx.request.body);
     result ? ctx.success(result, '更新商品成功') : ctx.fail('更新商品失败');
   }
 }

@@ -3,17 +3,21 @@
 module.exports = app => {
   return async (ctx, next) => {
     try {
-      const result = await next();
+      await next();
+      // const result = await next();
       // ctx.rotateCsrfSecret();
-      if (!ctx.body) {
-        result ? ctx.body = {
-          code: 200,
-          data: result,
-          msg: '成功',
-        } : ctx.body = {
-          code: 500,
-          msg: '失败',
-        };
+      // if (!ctx.body) {
+      //   result ? ctx.body = {
+      //     code: 200,
+      //     data: result,
+      //     msg: '成功',
+      //   } : ctx.body = {
+      //     code: 500,
+      //     msg: '失败',
+      //   };
+      // }
+      if (ctx.transaction) {
+        ctx.transaction.commit();
       }
     } catch (e) {
       ctx.body = {
@@ -21,6 +25,9 @@ module.exports = app => {
         stack: app.config.env === 'local' ? e.stack : undefined,
         message: e.message,
       };
+      if (ctx.transaction) {
+        ctx.transaction.rollback();
+      }
     }
   };
 };
