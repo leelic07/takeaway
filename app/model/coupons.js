@@ -13,7 +13,7 @@ module.exports = app => {
     receiveNum: { type: INTEGER, defaultValue: 0 },
     sendStartTime: { type: DATE, defaultValue: null },
     sendEndTime: { type: DATE, defaultValue: null },
-    couponSendType: { type: INTEGER, defaultValue: 1 },
+    // couponSendType: { type: INTEGER, defaultValue: 1 },
     effectiveTime: { type: DATE, defaultValue: null },
     couponSendTypeName: { type: STRING(30), defaultValue: '' },
     startDate: { type: DATE, defaultValue: null },
@@ -29,6 +29,7 @@ module.exports = app => {
     Coupons.belongsToMany(app.model.Merchants, { through: 'MerchantsCoupons' });
     Coupons.belongsToMany(app.model.Orders, { through: 'OrdersCoupons' });
     Coupons.belongsToMany(app.model.Users, { through: 'UsersCoupons' });
+    Coupons.belongsTo(app.model.CouponTypes, { foreignKey: 'couponSendType', constraints: false });
   };
   return Coupons;
 };

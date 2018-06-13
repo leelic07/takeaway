@@ -53,5 +53,13 @@ module.exports = app => {
   router.post('/item_types/update', controller.itemTypes.update);
 
   router.get('/activitys/page', controller.activitys.page);
+  router.post('/activitys/save', controller.activitys.save);
+  router.get('/activitys/edit', controller.activitys.edit);
+  router.post('/activitys/update', controller.activitys.update);
   router.get('/coupons/page', controller.coupons.page);
+  router.post('/coupons/save', controller.coupons.save);
+  router.get('/coupons/edit', controller.coupons.edit);
+
+  router.get('/coupon_send_types/list', controller.couponTypes.list);
+  router.post('/coupon_send_types/save', controller.couponTypes.bulkSave);
 };

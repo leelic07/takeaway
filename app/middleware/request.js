@@ -20,14 +20,16 @@ module.exports = app => {
         ctx.transaction.commit();
       }
     } catch (e) {
-      ctx.body = {
-        success: false,
-        stack: app.config.env === 'local' ? e.stack : undefined,
-        message: e.message,
-      };
+      // ctx.body = {
+      //   success: false,
+      //   stack: app.config.env === 'local' ? e.stack : undefined,
+      //   stack: e.stack,
+      //   message: e.message,
+      // };
       if (ctx.transaction) {
         ctx.transaction.rollback();
       }
+      ctx.throw(e.status, e.message);
     }
   };
 };
