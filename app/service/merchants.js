@@ -52,16 +52,20 @@ class MerchantsService extends Base {
 
   async update(data) {
     const { ctx, transaction } = this;
-    await ctx.tran();
     const id = data.id;
-    const result = await ctx.model.Merchants.update(data, {
-      where: { id },
-      transaction,
-    });
-    const merchant = await ctx.model.Merchants.findById(id);
     data.pictures.forEach(picture => delete picture.id);
-    const pictures = await ctx.model.Pictures.bulkCreate(data.pictures, { transaction });
-    merchant.setPictures(pictures, { transaction });
+    const merchantResult = await Promise.all([
+      ctx.tran(),
+      ctx.model.Merchants.update(data, {
+        where: { id },
+        transaction,
+      }),
+      ctx.model.Merchants.findById(id),
+      ctx.model.Pictures.bulkCreate(data.pictures, { transaction }),
+    ]);
+    const merchant = merchantResult[2];
+    const pictures = merchantResult[3];
+    const result = await merchant.setPictures(pictures, { transaction });
     return result;
   }
 
