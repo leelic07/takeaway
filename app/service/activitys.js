@@ -10,9 +10,7 @@ class ActivitysService extends Base {
       limit,
       offset,
     });
-    const totalCount = await ctx.model.Activitys.count({
-      where,
-    });
+    const totalCount = await ctx.model.Activitys.count({ where });
     return {
       activitys,
       totalCount,
@@ -21,13 +19,14 @@ class ActivitysService extends Base {
 
   async save(data) {
     const { ctx, transaction } = this;
+    data.merchants.forEach(merchant => { merchant.id = merchant.merchantId; });
     await ctx.tran();
     const activity = await ctx.model.Activitys.create(data, { transaction });
-    await data.merchants.forEach(merchant => {
-      merchant.id = merchant.merchantId;
-      const mer = ctx.model.Merchants.build(merchant, { transaction });
-      mer.addActivitys(activity, { transaction });
+    const merchants = await ctx.model.Merchants.bulkCreate(data.merchants, {
+      transaction,
+      updateOnDuplicate: [ 'id' ],
     });
+    activity.setMerchants(merchants, { transaction });
     return activity;
   }
 
@@ -45,18 +44,18 @@ class ActivitysService extends Base {
 
   async update(data) {
     const { ctx, transaction } = this;
+    data.merchants.forEach(merchant => { merchant.id = merchant.merchantId; });
     await ctx.tran();
-    const result = await ctx.model.Activitys.update(data, {
+    await ctx.model.Activitys.update(data, {
       where: { id: data.id },
       transaction,
     });
     const activity = await ctx.model.Activitys.findById(data.id);
-    await activity.setMerchants(null, { transaction });
-    await data.merchants.forEach(merchant => {
-      merchant.id = merchant.merchantId;
-      const mer = ctx.model.Merchants.build(merchant);
-      activity.addMerchants(mer, { transaction });
+    const merchants = await ctx.model.Merchants.bulkCreate(data.merchants, {
+      updateOnDuplicate: [ 'id' ],
+      transaction,
     });
+    const result = await activity.setMerchants(merchants, { transaction });
     return result;
   }
 }

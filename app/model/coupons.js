@@ -14,7 +14,7 @@ module.exports = app => {
     sendStartTime: { type: DATE, defaultValue: null },
     sendEndTime: { type: DATE, defaultValue: null },
     // couponSendType: { type: INTEGER, defaultValue: 1 },
-    effectiveTime: { type: DATE, defaultValue: null },
+    effectiveTime: { type: INTEGER, defaultValue: null },
     couponSendTypeName: { type: STRING(30), defaultValue: '' },
     startDate: { type: DATE, defaultValue: null },
     endDate: { type: DATE, defaultValue: null },

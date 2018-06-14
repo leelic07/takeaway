@@ -14,6 +14,7 @@ module.exports = app => {
   Pictures.associate = () => {
     Pictures.belongsTo(app.model.Merchants, { foreignKey: 'merchantId', onDelete: 'CASCADE', constraints: false });
     Pictures.belongsTo(app.model.Items, { foreignKey: 'itemId', onDelete: 'CASCADE', constraints: false });
+    Pictures.belongsTo(app.model.Advertisements, { foreignKey: 'advertisementId', constraints: false });
   };
   return Pictures;
 };

@@ -15,6 +15,8 @@ module.exports = app => {
   router.post('/login', controller.managers.login);
   router.post('/register', controller.managers.register);
   router.get('/logout', controller.managers.logout);
+  router.get('/managers/edit', controller.managers.edit);
+  router.post('/resetPwd', controller.managers.resetPwd);
 
   router.post('/upload/uploadfile', upload.single('file'), controller.upload.uploadfile);
   router.post('/merchants/save', controller.merchants.save);
@@ -59,7 +61,18 @@ module.exports = app => {
   router.get('/coupons/page', controller.coupons.page);
   router.post('/coupons/save', controller.coupons.save);
   router.get('/coupons/edit', controller.coupons.edit);
+  router.post('/coupons/update', controller.coupons.update);
 
   router.get('/coupon_send_types/list', controller.couponTypes.list);
   router.post('/coupon_send_types/save', controller.couponTypes.bulkSave);
+
+  router.get('/advertisements/page', controller.advertisements.page);
+  router.post('/advertisements/save', controller.advertisements.save);
+  router.get('/advertisements/edit', controller.advertisements.edit);
+  router.post('/advertisements/update', controller.advertisements.update);
+  router.post('/advertisements/updateIsPuton', controller.advertisements.updateIsPuton);
+
+  router.get('/user_ranks/list', controller.userRanks.list);
+  router.post('/user_ranks/batchSave', controller.userRanks.batchSave);
+  router.post('/user_ranks/batchUpdate', controller.userRanks.batchUpdate);
 };

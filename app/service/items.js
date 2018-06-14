@@ -83,19 +83,13 @@ class ItemsService extends Base {
     data.pictures.forEach(pic => delete pic.id);
     data.itemMerchants.forEach(merchant => { merchant.id = merchant.merchantId; });
     data.itemPropertys.forEach(property => { property.id = property.propertyId; });
-    const itemResult = await Promise.all([
-      ctx.tran(),
-      ctx.model.Items.update(data, { where: { id: data.id }, transaction }),
-      ctx.model.Items.findById(data.id),
-      ctx.model.Pictures.bulkCreate(data.pictures, { transaction, updateOnDuplicate: [ 'url' ] }),
-      ctx.model.Merchants.bulkCreate(data.itemMerchants, { transaction, updateOnDuplicate: [ 'id' ] }),
-      ctx.model.Propertys.bulkCreate(data.itemPropertys, { transaction, updateOnDuplicate: [ 'price', 'isOpen' ] }),
-    ]);
-    const item = itemResult[2];
-    const pictures = itemResult[3];
-    const merchants = itemResult[4];
-    const propertys = itemResult[5];
-    const result = await Promise.all([
+    await ctx.tran();
+    const result = await ctx.model.Items.update(data, { where: { id: data.id }, transaction });
+    const item = await ctx.model.Items.findById(data.id);
+    const pictures = await ctx.model.Pictures.bulkCreate(data.pictures, { transaction, updateOnDuplicate: [ 'url' ] });
+    const merchants = await ctx.model.Merchants.bulkCreate(data.itemMerchants, { transaction, updateOnDuplicate: [ 'id' ] });
+    const propertys = await ctx.model.Propertys.bulkCreate(data.itemPropertys, { transaction, updateOnDuplicate: [ 'price', 'isOpen' ] });
+    await Promise.all([
       item.setPictures(pictures, { transaction }),
       item.setMerchants(merchants, { transaction }),
       item.setPropertys(propertys, { transaction }),

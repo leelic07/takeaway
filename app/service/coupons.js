@@ -21,13 +21,14 @@ class CouponsService extends Base {
 
   async save(data) {
     const { ctx, transaction } = this;
+    data.merchants.forEach(merchant => { merchant.id = merchant.merchantId; });
     await ctx.tran();
     const coupon = await ctx.model.Coupons.create(data, { transaction });
-    await data.merchants.forEach(merchant => {
-      merchant.id = merchant.merchantId;
-      const mer = ctx.model.Merchants.build(merchant, { transaction });
-      coupon.addMerchants(mer, { transaction });
+    const merchants = await ctx.model.Merchants.bulkCreate(data.merchants, {
+      transaction,
+      updateOnDuplicate: [ 'id' ],
     });
+    coupon.addMerchants(merchants, { transaction });
     const couponType = await ctx.model.CouponTypes.build({ id: data.couponSendType });
     await couponType.addCoupons(coupon, { transaction });
     return coupon;
@@ -42,6 +43,23 @@ class CouponsService extends Base {
     result.merchants.forEach(merchant => {
       merchant.dataValues.merchantId = merchant.id;
     });
+    return result;
+  }
+
+  async update(data) {
+    const { ctx, transaction } = this;
+    data.merchants.forEach(merchant => { merchant.id = merchant.merchantId; });
+    await ctx.tran();
+    const result = await ctx.model.Coupons.update(data, {
+      transaction,
+      where: { id: data.id },
+    });
+    const merchants = await ctx.model.Merchants.bulkCreate(data.merchants, {
+      transaction,
+      updateOnDuplicate: [ 'id' ],
+    });
+    const coupon = await ctx.model.Coupons.findById(data.id);
+    await coupon.setMerchants(merchants, { transaction });
     return result;
   }
 }

@@ -19,6 +19,12 @@ class CouponsController extends Controller {
     const result = await service.coupons.edit(ctx.query);
     result ? ctx.success({ coupons: result }, '查询优惠券成功') : ctx.fail('查询优惠券失败');
   }
+
+  async update() {
+    const { ctx, service } = this;
+    const result = await service.coupons.update(ctx.request.body);
+    result ? ctx.success(result, '更新优惠券成功') : ctx.fail('更新优惠券失败');
+  }
 }
 
 module.exports = CouponsController;
