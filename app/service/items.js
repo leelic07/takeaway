@@ -32,22 +32,17 @@ class ItemsService extends Base {
 
   async save(data) {
     const { ctx, transaction } = this;
-    await ctx.tran();
     data.itemTypeId = data.itemType;
-    const items = await ctx.model.Items.create(data, {
-      include: [ ctx.model.Pictures ],
-      transaction,
-    });
-    await data.itemMerchants.forEach(merchant => {
-      merchant.id = merchant.merchantId;
-      const merchants = ctx.model.Merchants.build(merchant, { transaction });
-      items.addMerchants(merchants, { transaction });
-    });
-    await data.itemPropertys.forEach(property => {
-      property.id = property.propertyId;
-      const propertys = ctx.model.Propertys.build(property, { transaction });
-      items.addPropertys(propertys, { transaction });
-    });
+    data.itemMerchants.forEach(merchant => { merchant.id = merchant.merchantId; });
+    data.itemPropertys.forEach(property => { property.id = property.propertyId; });
+    await ctx.tran();
+    const items = await ctx.model.Items.create(data, { transaction });
+    const pictures = await ctx.model.Pictures.bulkCreate(data.pictures, { transaction, updateOnDuplicate: [ 'url' ] });
+    const merchants = await ctx.model.Merchants.bulkCreate(data.itemMerchants, { transaction, updateOnDuplicate: [ 'id' ] });
+    const propertys = await ctx.model.Propertys.bulkCreate(data.itemPropertys, { transaction, updateOnDuplicate: [ 'price', 'isOpen' ] });
+    await items.addPictures(pictures, { transaction });
+    await items.addMerchants(merchants, { transaction });
+    await items.addPropertys(propertys, { transaction });
     const type = await ctx.model.ItemTypes.findById(items.itemTypeId, { transaction });
     const quantity = type.quantity + 1;
     const id = type.id;
@@ -92,9 +87,9 @@ class ItemsService extends Base {
       ctx.tran(),
       ctx.model.Items.update(data, { where: { id: data.id }, transaction }),
       ctx.model.Items.findById(data.id),
-      ctx.model.Pictures.bulkCreate(data.pictures, { transaction, updateOnDuplicate: [ 'id' ] }),
+      ctx.model.Pictures.bulkCreate(data.pictures, { transaction, updateOnDuplicate: [ 'url' ] }),
       ctx.model.Merchants.bulkCreate(data.itemMerchants, { transaction, updateOnDuplicate: [ 'id' ] }),
-      ctx.model.Propertys.bulkCreate(data.itemPropertys, { transaction, updateOnDuplicate: [ 'id' ] }),
+      ctx.model.Propertys.bulkCreate(data.itemPropertys, { transaction, updateOnDuplicate: [ 'price', 'isOpen' ] }),
     ]);
     const item = itemResult[2];
     const pictures = itemResult[3];
