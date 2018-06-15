@@ -10,7 +10,24 @@ class UserRanksService extends Base {
 
   async batchSave(data) {
     const { ctx } = this;
-    const result = await ctx.model.UserRanks.bulkCreate(data.userRanks);
+    // data.userRanks = [{
+    //   name: '普通',
+    //   startScore: 0,
+    //   endScore: 0,
+    // }, {
+    //   name: '银牌',
+    //   startScore: 0,
+    //   endScore: 0,
+    // }, {
+    //   name: '金牌',
+    //   startScore: 0,
+    //   endScore: 0,
+    // }, {
+    //   name: '钻石',
+    //   startScore: 0,
+    //   endScore: 0,
+    // }];
+    const result = await ctx.model.UserRanks.bulkCreate(data);
     return result;
   }
 

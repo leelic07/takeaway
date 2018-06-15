@@ -80,12 +80,11 @@ class ItemsService extends Base {
 
   async update(data) {
     const { ctx, transaction } = this;
-    data.pictures.forEach(pic => delete pic.id);
     data.itemMerchants.forEach(merchant => { merchant.id = merchant.merchantId; });
     data.itemPropertys.forEach(property => { property.id = property.propertyId; });
     await ctx.tran();
     const result = await ctx.model.Items.update(data, { where: { id: data.id }, transaction });
-    const item = await ctx.model.Items.findById(data.id);
+    const item = await ctx.model.Items.build(data);
     const pictures = await ctx.model.Pictures.bulkCreate(data.pictures, { transaction, updateOnDuplicate: [ 'url' ] });
     const merchants = await ctx.model.Merchants.bulkCreate(data.itemMerchants, { transaction, updateOnDuplicate: [ 'id' ] });
     const propertys = await ctx.model.Propertys.bulkCreate(data.itemPropertys, { transaction, updateOnDuplicate: [ 'price', 'isOpen' ] });
@@ -100,11 +99,12 @@ class ItemsService extends Base {
   async superUpdate(data) {
     const { ctx, transaction } = this;
     await ctx.tran();
+    data.id = data.itemId;
     const result = await ctx.model.Items.update({ isPuton: data.isPuton }, {
-      where: { id: data.itemId },
+      where: { id: data.id },
       transaction,
     });
-    const item = await ctx.model.Items.findById(data.itemId);
+    const item = await ctx.model.Items.build(data);
     const merchants = await ctx.model.Merchants.findAll({
       where: { id: { $in: data.merchantId.split(',') } },
     });

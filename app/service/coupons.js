@@ -2,9 +2,9 @@
 const Base = require('./base');
 
 class CouponsService extends Base {
-  async page() {
+  async page(pagination) {
     const { ctx } = this;
-    const { limit, offset, where } = this;
+    const { limit, offset, where } = ctx.helper.page(pagination);
     const coupons = await ctx.model.Coupons.findAll({
       where,
       limit,
