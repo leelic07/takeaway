@@ -92,38 +92,6 @@ class ItemsService extends Base {
     return result;
   }
 
-  async updateItems(data) {
-    const { ctx, transaction } = this;
-    await ctx.model.Items.update(data, { where: { id: data.id }, transaction });
-    const item = await ctx.model.Items.build(data);
-    return item;
-  }
-
-  async updateItemsAssociate(data) {
-    const { ctx, transaction } = this;
-    data.itemMerchants.forEach(merchant => { merchant.id = merchant.merchantId; });
-    data.itemPropertys.forEach(property => { property.id = property.propertyId; });
-    const pictures = await ctx.model.Pictures.bulkCreate(data.pictures, { transaction, updateOnDuplicate: [ 'url' ] });
-    const merchants = await ctx.model.Merchants.bulkCreate(data.itemMerchants, { transaction, updateOnDuplicate: [ 'id' ] });
-    const propertys = await ctx.model.Propertys.bulkCreate(data.itemPropertys, { transaction, updateOnDuplicate: [ 'price', 'isOpen' ] });
-    return {
-      pictures,
-      merchants,
-      propertys,
-    };
-  }
-
-  async buildAssociate(data) {
-    const { transaction } = this;
-    const { pictures, merchants, propertys, item } = data;
-    const result = await Promise.all([
-      item.setPictures(pictures, { transaction }),
-      item.setMerchants(merchants, { transaction }),
-      item.setPropertys(propertys, { transaction }),
-    ]);
-    return result;
-  }
-
   async superUpdate(data) {
     const { ctx, transaction } = this;
     await ctx.tran();

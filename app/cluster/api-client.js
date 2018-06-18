@@ -19,8 +19,6 @@ class APIClient extends APIClientBase {
       getData: 'invoke',
       getItems: 'invoke',
       updateItems: 'invoke',
-      updateItemsAssociate: 'invoke',
-      buildAssociate: 'invoke',
     };
   }
   get clusterOptions() {
@@ -50,17 +48,7 @@ class APIClient extends APIClientBase {
   async updateItems(controller) {
     const { ctx } = controller;
     await ctx.tran();
-    const item = await this._client.updateItems(controller);
-    const data = await this._client.updateItemsAssociate(controller);
-    const result = await this._client.buildAssociate(controller, Object.assign(data, { item }));
-    return result;
-  }
-  async updateItemsAssociate(controller) {
-    const data = await this._client.updateItemsAssociate(controller);
-    return data;
-  }
-  async buildAssociate(controller, data) {
-    const result = await this._client.buildAssociate(controller, data);
+    const result = await this._client.updateItems(controller);
     return result;
   }
 }

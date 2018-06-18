@@ -1,7 +1,8 @@
 'use strict';
 const Controller = require('egg').Controller;
-const clien = require('../cluster/api-client.js');
-const client = new clien();
+// const clien = require('../cluster/api-client.js');
+// const client = new clien();
+
 class ItemsController extends Controller {
   async page() {
     const { ctx, service } = this;
@@ -33,12 +34,10 @@ class ItemsController extends Controller {
   }
 
   async update() {
-    const { ctx } = this;
+    const { ctx, service } = this;
     // await ctx.tran();
-    // const result = await service.items.update(ctx.request.body);
-    const result = await client.updateItems(this);
-    // const data = await this.client2.updateItemsAssociate(this);
-    // const result = await this.client3.buildAssociate(this, Object.assign(data, { item }));
+    const result = await service.items.update(ctx.request.body);
+    // const result = await client.updateItems(this);
     result ? ctx.success(result, '更新商品成功') : ctx.fail('更新商品失败');
   }
 

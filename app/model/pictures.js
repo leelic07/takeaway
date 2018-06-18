@@ -6,9 +6,6 @@ module.exports = app => {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
     url: { type: STRING(125), defaultValue: '' },
   }, {
-    timestamps: true,
-    paranoid: true,
-    underscored: false,
     tableName: 'pictures',
   });
   Pictures.associate = () => {

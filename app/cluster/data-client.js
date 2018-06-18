@@ -25,27 +25,9 @@ class DataClient extends Base {
     return result;
   }
 
-  // async updateItems(controller) {
-  //   const { ctx, service } = controller;
-  //   // const result = await service.items.update(ctx.request.body);
-  //   return result;
-  // }
-
   async updateItems(controller) {
     const { ctx, service } = controller;
-    const result = await service.items.updateItems(ctx.request.body);
-    return result;
-  }
-
-  async updateItemsAssociate(controller) {
-    const { ctx, service } = controller;
-    const result = await service.items.updateItemsAssociate(ctx.request.body);
-    return result;
-  }
-
-  async buildAssociate(controller, data) {
-    const { service } = controller;
-    const result = await service.items.buildAssociate(data);
+    const result = await service.items.update(ctx.request.body);
     return result;
   }
 }
