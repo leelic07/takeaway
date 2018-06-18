@@ -4,14 +4,17 @@
   "description": "",
   "private": true,
   "dependencies": {
+    "cluster-client": "^2.1.1",
     "egg": "^2.2.1",
+    "egg-cluster": "^1.18.0",
     "egg-cors": "^2.0.0",
     "egg-scripts": "^2.5.0",
     "egg-sequelize": "^3.1.4",
     "egg-validate": "^1.0.0",
     "koa-multer": "^1.0.2",
     "md5": "^2.2.1",
-    "mysql2": "^1.5.3"
+    "mysql2": "^1.5.3",
+    "sdk-base": "^3.4.0"
   },
   "devDependencies": {
     "autod": "^3.0.1",

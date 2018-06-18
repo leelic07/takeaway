@@ -1,5 +1,5 @@
 'use strict';
-
+const APIClient = require('../cluster/api-client');
 /**
  * @param {Egg.Application} app - egg application
  */
@@ -11,6 +11,12 @@ module.exports = app => {
   //     await app.model.sync();
   //   });
   // }
+  const config = app.config.client;
+  app.client = new APIClient(Object.assign({}, config, { cluster: app.cluster.bind(this) }));
+  app.beforeStart(async () => {
+    await app.client.ready(true);
+  });
+
   router.get('/', controller.home.index);
   router.post('/login', controller.managers.login);
   router.post('/register', controller.managers.register);
