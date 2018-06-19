@@ -8,6 +8,7 @@ module.exports = {
       id: { type: INTEGER, primaryKey: true, autoIncrement: true },
       url: { type: STRING(120), defaultValue: '' },
     });
+    await db.addIndex('pictures', ['name'], { type: STRING(32) });
   }),
   down: co.wrap(async db => {
     await db.dropTable('pictures');
