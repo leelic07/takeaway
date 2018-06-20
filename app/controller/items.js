@@ -35,10 +35,11 @@ class ItemsController extends Controller {
 
   async update() {
     const { ctx, service } = this;
-    // await ctx.tran();
     const result = await service.items.update(ctx.request.body);
-    // const result = await client.updateItems(this);
-    result ? ctx.success(result, '更新商品成功') : ctx.fail('更新商品失败');
+    if (result) {
+      ctx.success(result, '更新商品成功');
+      console.log('update sucess');
+    } else ctx.fail('更新商品失败');
   }
 
   async superUpdate() {

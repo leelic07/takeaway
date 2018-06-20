@@ -3,6 +3,7 @@
 module.exports = app => {
   return async (ctx, next) => {
     try {
+      // ctx.method !== ('GET' || 'OPTIONS') && ctx.tran();
       await next();
       // const result = await next();
       // ctx.rotateCsrfSecret();
