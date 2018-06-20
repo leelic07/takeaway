@@ -93,7 +93,8 @@ class ItemsService extends Base {
     const propertys = await ctx.model.Propertys.bulkCreate(data.itemPropertys, { transaction, updateOnDuplicate: [ 'price', 'isOpen' ] });
     await item.setPictures(pictures, { transaction });
     await item.setMerchants(merchants, { transaction });
-    await item.setPropertys(propertys, { transaction });
+    const result = await item.setPropertys(propertys, { transaction });
+    return result;
     // ctx.transaction.commit();
   }
 
